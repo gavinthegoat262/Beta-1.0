@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Falling Blocks</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #FFA500; /* Orange background color */
+      overflow: hidden; /* Hide overflowing content */
+    }
+
+    .block {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(255, 255, 255, 0.5); /* Transparent white */
+      animation: fall 5s linear infinite; /* Animation for falling */
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-20px); /* Initial position */
+        opacity: 1; /* Full opacity */
+      }
+      100% {
+        transform: translateY(100vh); /* Final position */
+        opacity: 0; /* Completely transparent */
+      }
+    }
+
+    /* Adjust these values to create more blocks */
+    .block:nth-child(1) {
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .block:nth-child(2) {
+      left: 30%;
+      animation-delay: 1s;
+    }
+
+    .block:nth-child(3) {
+      left: 50%;
+      animation-delay: 2s;
+    }
+
+    .block:nth-child(4) {
+      left: 70%;
+      animation-delay: 3s;
+    }
+
+    .block:nth-child(5) {
+      left: 90%;
+      animation-delay: 4s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Create five falling blocks -->
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prestigious Image Uploader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #FFA500; /* Orange background */
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    .image-container {
+      width: 20%; /* Five images per row */
+      padding: 10px;
+      border: 5px solid #FFD700; /* Thinner gold border */
+      background-color: #FFD700; /* Gold background */
+      border-radius: 20px 20px 0 0; /* Adjusted border radius */
+      overflow: hidden; /* Hide overflowing content */
+      position: relative; /* Set position for absolute elements */
+    }
+
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      max-height: 80px; /* Adjust the maximum height as needed */
+      width: auto; /* Allow images to resize proportionally */
+      display: block;
+      margin: 0 auto; /* Center images horizontally */
+    }
+
+    .circle {
+      width: 100%;
+      height: 30px;
+      background-color: #FFD700; /* Gold background */
+      border-radius: 50%; /* Circle shape */
+      position: absolute;
+      top: -15px; /* Pull the circle above the image container */
+      left: 0;
+      right: 0;
+      margin: 0 auto; /* Center the circle horizontally */
+      display: flex;
+      justify-content: center;
+    }
+
+    .upload-container {
+      text-align: center;
+      width: 100%;
+    }
+
+    .upload-button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .upload-button:hover {
+      background-color: #45a049;
+    }
+
+    #fileInput {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="upload-container">
+    <h2>ShoePic</h2>
+    <label for="fileInput" class="upload-button">Upload Images</label>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+  </div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+      var files = this.files;
+
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+
+        if (file) {
+          var reader = new FileReader();
+
+          reader.addEventListener('load', function() {
+            var imagePreview = document.createElement('div');
+            imagePreview.classList.add('image-container');
+
+            var img = document.createElement('img');
+            img.src = this.result;
+
+            imagePreview.appendChild(img);
+            document.body.appendChild(imagePreview);
+
+            // Save image data to local storage
+            localStorage.setItem('image-' + new Date().getTime(), this.result);
+          });
+
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+
+    // Load images from local storage on page load
+    window.addEventListener('load', function() {
+      for (var key in localStorage) {
+        if (key.startsWith('image-')) {
+          var imagePreview = document.createElement('div');
+          imagePreview.classList.add('image-container');
+
+          var img = document.createElement('img');
+          img.src = localStorage.getItem(key);
+
+          imagePreview.appendChild(img);
+          document.body.appendChild(imagePreview);
+        }
+      }
+    });
+
+    // Remove images after 5 minutes
+    setTimeout(function() {
+      for (var key in localStorage) {
+        if (key.startsWith('image-')) {
+          localStorage.removeItem(key);
+        }
+      }
+      // Remove image containers from the DOM
+      var imageContainers = document.querySelectorAll('.image-container');
+      imageContainers.forEach(function(container) {
+        container.remove();
+      });
+    }, 5 * 60 * 1000); // 5 minutes in milliseconds
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prestigious Image Uploader</title>
+  <style>
+    .image-container {
+      width: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin: 10px;
+      text-align: center;
+    }
+
+    .like-button {
+      background-color: #008CBA; /* Blue button color */
+      border: none;
+      color: white;
+      padding: 5px 10px; /* Adjust padding as needed */
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .like-count {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="fileInput" accept="image/*" multiple>
+  <div id="imagePreviews"></div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+      var files = this.files;
+
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+
+        if (file) {
+          var reader = new FileReader();
+
+          reader.addEventListener('load', function() {
+            var imagePreview = document.createElement('div');
+            imagePreview.classList.add('image-container');
+
+            var img = document.createElement('img');
+            img.src = this.result;
+            imagePreview.appendChild(img);
+
+            var likeButton = document.createElement('button');
+            likeButton.classList.add('like-button');
+            likeButton.textContent = 'Like';
+            likeButton.onclick = function() {
+              like(this);
+            };
+            imagePreview.appendChild(likeButton);
+
+            var likeCount = document.createElement('span');
+            likeCount.classList.add('like-count');
+            likeCount.textContent = '0';
+            likeButton.appendChild(likeCount);
+
+            document.getElementById('imagePreviews').appendChild(imagePreview);
+          });
+
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+
+    function like(button) {
+      var likeCount = button.querySelector('.like-count');
+      var currentCount = parseInt(likeCount.textContent);
+      likeCount.textContent = currentCount + 1;
+      button.disabled = true; // Disable the button after clicking
+    }
+  </script>
+</body>
+</html>
